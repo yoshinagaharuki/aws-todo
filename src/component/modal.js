@@ -3,12 +3,11 @@ import { Message } from "./message.js";
 import { Card } from "./card.js";
 import { CardToglle } from "./card_toggle.js";
 export class Modal {
-    /* カードがないとき(追加ボタンを押したとき)はからのからのカードを作成 */
+    /* カードがないとき(追加ボタンを押したとき)は空のカードを作成 */
     constructor(is_new, card) {
         this.is_new = is_new;
         this.card = card;
         this.create();
-        console.log(this);
         this.is_submitted = false;
     }
     static modalMask = document.querySelector(".modal_mask");
@@ -31,7 +30,6 @@ export class Modal {
     static dispose() {
         Modal.modalMask.style.display = "none";
         Modal.modal.style.display = "none";
-        // その他内容をリセットする処理
     }
     /* 既存のモーダルを(カード情報を元に)上書きする */
     create() {
@@ -42,7 +40,6 @@ export class Modal {
         Modal.modal.style.display = "flex";
     }
     setFormValue() {
-        console.log(this.card.todo);
         Modal.formTitle.value = this.card.todo.title || "";
         Modal.formDetail.value = this.card.todo.detail || "";
         Modal.formDeadLine.value = this.card.todo.deadLine;
@@ -76,12 +73,9 @@ export class Modal {
         const year = today.getFullYear(); // 年を取得
         const month = String(today.getMonth() + 1).padStart(2, "0"); // 月を取得（0から始まるため +1）
         const day = String(today.getDate()).padStart(2, "0");
-        console.log(`${year}-${month}-${day}`);
         return `${year}-${month}-${day}`;
     }
     async onSave() {
-        // 保存時の処理(index.jsから移行)
-        console.log("保存ボタンが押されたよ");
         const formData = this.createFormData();
         const is_success = await TodoService.update(formData);
         if (!is_success) {
@@ -124,7 +118,6 @@ export class Modal {
         Modal.modalSubmit.addEventListener("click", this.handleModalSubmit);
     }
 
-    // 仕方なく再定義している
     async getTodos() {
         const todos = await TodoService.getAll();
         // リストを返す
@@ -136,7 +129,7 @@ export class Modal {
             return dateA < dateB ? -1 : 1;
         });
         sortedCards.forEach((card) => card.create());
-        // toggleの反映(コンストラクタを非同期にできないので)
+        // toggleの反映
         CardToglle.resetShowCard();
     }
 }

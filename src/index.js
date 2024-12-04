@@ -23,10 +23,8 @@ class IndexManager {
             // this.openModal();
             // モーダルインスタンスの作成処理をかく
             const newTodo = new Todo();
-            console.log(newTodo);
             const newCard = new Card(newTodo);
             Modal.new(newCard);
-            console.log(newCard);
         });
     }
     /* モーダルの保存・作成ボタンを押した時の処理 */
@@ -60,7 +58,6 @@ class IndexManager {
     /* todoを取得しtodosに追加 */
     async getTodos() {
         this.todos = await TodoService.getAll();
-        console.log(this.todos);
         // リストを返す
         const cards = this.todos.map((todo) => new Card(todo));
         const sortedCards = cards.sort((a, b) => {

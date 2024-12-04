@@ -1,7 +1,6 @@
 export class CardToglle {
     constructor() {
         this.setEvents();
-        console.log(CardToglle.toggleValue.checked);
     }
     static toggle = document.querySelector(".card-toggle");
     static toggleValue = document.querySelector(".card-toggle>input");

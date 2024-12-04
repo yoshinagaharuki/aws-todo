@@ -13,17 +13,14 @@ export class Card {
     static disposeAll() {
         while (Card.cardContainer.firstChild) {
             const firstChild = Card.cardContainer.firstChild;
-            console.log(firstChild);
             Card.cardContainer.removeChild(firstChild);
-            console.log(Card.cardContainer);
         }
-        console.log("すべてのカードが削除されました");
+        console.info("すべてのカードが削除されました");
     }
 
     /* todoクラスからcardを作成しDOMに追加する */
     create() {
         const cardFragment = Card.cardTemplate.content.cloneNode(true);
-        // fragment自体はhtmlElementでないので属性を追加することができない
         this.card = cardFragment.querySelector(".card");
         this.cardTitleHeader = this.card.querySelector(".card__title--header");
         this.cardTitleBody = this.card.querySelector(".card__title--body");
@@ -100,10 +97,9 @@ export class Card {
             is_deleted: this.todo.is_deleted,
         };
         const is_success = await TodoService.update(data);
-        console.log(is_success);
         if (!is_success) {
             Message.error("削除に失敗しました");
-            // 失敗したので元に戻す
+            // 失敗した場合は元に戻す
             this.todo.is_deleted = false;
         } else {
             // 成功したので画面からも削除
@@ -113,18 +109,11 @@ export class Card {
     // is_doneを処理する
     async changeToDone() {
         this.todo.is_done = true;
-        // this.setCheckBtn();
-        // テスト
         await this.updateIsDone();
-        // 最終的にapi通信を行う
-        console.log(this.todo);
     }
     async changeToNotDone() {
         this.todo.is_done = false;
-        // this.setCheckBtn();
-        // テスト
         await this.updateIsDone();
-        console.log(this.todo);
     }
     async updateIsDone() {
         const post_type = "update_is_done";
@@ -137,13 +126,10 @@ export class Card {
             is_deleted: null,
         };
         const is_success = await TodoService.update(data);
-        console.log(is_success);
         if (!is_success) {
             Message.error("更新に失敗しました");
             // 失敗したので元に戻す
             this.todo.is_done = !this.todo.is_done;
-            // console.log(this.card.is_done);
-            // this.setCheckBtn();
         } else {
             if (this.todo.is_done) {
                 this.card.classList.add("is_done");

@@ -1,54 +1,46 @@
 import { Todo } from "../models/todo.js";
 import { Message } from "../component/message.js";
-export class TodoService {
-    static baseUrl = "http://127.0.0.1:8000/default/todo";
-    static baseUrl = "";
-    static async getAll() {
-        Message.dispose();
-        const url =
-            "https://m5ysmv4i1d.execute-api.ap-northeast-1.amazonaws.com/default/GetTodo";
-        // const url = `${TodoService.baseUrl}`;
+import { ApiUrls } from "./config.js";
 
-        return fetch(url)
+export class TodoService {
+    static async fetchFromApi(url, options = {}) {
+        // 新しいリクエストの直前に削除
+        Message.dispose();
+        return fetch(url, options)
             .then((res) => {
                 if (!res.ok) {
-                    // レスポンスがエラーの場合はエラーをスロー
-                    throw new Error(`HTTP error! status: ${res.status}`);
+                    throw new Error(`HTTP error! Status: ${res.status}`);
                 }
-                // レスポンスをJSONに変換
                 return res.json();
             })
-            .then((data) => {
-                console.log(data);
-                // const todoItems = data.Items;
-                const todoItems = data;
-
-                // Todoオブジェクトに変換してリストに格納
-                const _todos = todoItems.map(
-                    (todoItem) =>
-                        new Todo(
-                            todoItem.id,
-                            todoItem.title,
-                            todoItem.detail,
-                            todoItem.deadLine,
-                            todoItem.is_done,
-                            todoItem.is_deleted
-                        )
-                );
-                return _todos; // _todosを返す
-            })
             .catch((error) => {
-                // エラーハンドリング
+                console.error("API error:", error);
+                throw error;
+            });
+    }
+
+    static async getAll() {
+        return this.fetchFromApi(ApiUrls.getTodo)
+            .then((data) =>
+                data.map(
+                    (item) =>
+                        new Todo(
+                            item.id,
+                            item.title,
+                            item.detail,
+                            item.deadLine,
+                            item.is_done,
+                            item.is_deleted
+                        )
+                )
+            )
+            .catch((error) => {
                 console.error("Error fetching todos:", error);
-                throw error; // エラーを再スローする（必要に応じて）
+                return [];
             });
     }
 
     static async update(formData) {
-        Message.dispose();
-        const url =
-            "https://p92h80e9cf.execute-api.ap-northeast-1.amazonaws.com/default/ManageTodo";
-        // const url = `${TodoService.baseUrl}/update_todo/`;
         const data = {
             post_type: formData.post_type,
             id: formData.id,
@@ -58,25 +50,15 @@ export class TodoService {
             is_done: formData.is_done,
             is_deleted: formData.is_deleted,
         };
-        return fetch(url, {
+
+        return this.fetchFromApi(ApiUrls.manageTodo, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
         })
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error("http error is occured!");
-                }
-                return res.json();
-            })
-            .then((data) => {
-                console.log("success!");
-                return true;
-            })
-            .catch((err) => {
-                console.log("error has occured!");
+            .then(() => true)
+            .catch((error) => {
+                console.error("Error updating todo:", error);
                 return false;
             });
     }

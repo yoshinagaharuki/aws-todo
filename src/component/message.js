@@ -1,6 +1,5 @@
 export class Message {
     constructor(type, message) {
-        // type=info|error
         this.type = type;
         this.message = message;
         this.create();
