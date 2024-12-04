@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aws-todo</title>
+    <link rel="icon" href="../image/logo.png">
+    <link rel="stylesheet" type="text/css" href="../css/index.css" />
+    <!-- googleアイコンの導入 -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- 更新確認用 -->
+    <div class="header">
+        <div class="header__icon">BeEnToDo</div>
+    </div>
+    <div class="main">
+        <!-- 編集可能なモーダル -->
+        <div class="modal_mask"></div>
+        <div class="modal">
+            <div class="modal__close-btn active">
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+            </div>
+            <input type="text" class="modal__title" name="title" value="" placeholder="タイトル"></input>
+            <textarea class="modal__detail" name="detail" rows="10" placeholder="詳細"></textarea>
+            <input type="date" class="modal__deadline" name="deadline" value=""></input>
+            <!-- 新規作成モーダルのときtrue -->
+            <input class="modal__is_new" type="hidden" name="is_new" value="false">
+            <button class="modal__submit">保存</button>
+        </div>
+
+        <!-- messageを表示 -->
+        <div class="message">
+            <p class="message__body">
+                aaaadfaadfagasdgaggadljsghads;kghads;jghas;ljhga;ghdas;ljgha;jdshga;jhgasd;j
+            </p>
+            <span class="material-symbols-outlined message__close-btn">
+                close
+            </span>
+        </div>
+
+        <!-- 表示カードを操作するトグル -->
+        <label class="card-toggle">
+            <input type="checkbox" checked />
+        </label>
+        <!-- todoカード表示 -->
+        <div class="card-container"></div>
+    </div>
+    <a class="floating-btn" href="#">
+        <span class="material-symbols-outlined">add </span>
+    </a>
+    <!--cardを作成するためのtemplate -->
+    <template id="cardTemplate">
+        <div class="card">
+            <div class="card__title">
+                <div class="card__title--header">期限切れ</div>
+                <!-- タイトル -->
+                <div class="card__title--body"></div>
+                <!-- 詳細(表示していない) -->
+                <div class="card__title--detail">
+                </div>
+            </div>
+            <div class="card__body">
+                <!-- 期限 -->
+                <div class="card__body--deadline"></div>
+                <div class="card__body--buttons">
+                    <div class="button button-delete">
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </div>
+                    <div class="button button-edit">
+                        <span class="material-symbols-outlined">
+                            edit_note
+                        </span>
+                    </div>
+                    <div class="button button__is-not-done">
+                        <span class="material-symbols-outlined">
+                            check_box_outline_blank
+                        </span>
+                    </div>
+                    <div class="button button__is-done">
+                        <span class="material-symbols-outlined">
+                            select_check_box
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script type="module" src="../src/index.js"></script>
+</body>
+
+
+</html>

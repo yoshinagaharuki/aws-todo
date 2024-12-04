@@ -1,0 +1,319 @@
+@charset "UTF-8";
+* {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+html,
+body {
+  background-color: #ffffff;
+  color: #000000;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+body .header {
+  width: 100%;
+  height: 70px;
+  background-color: rgb(71, 109, 181);
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+body .header__icon {
+  color: white;
+  top: 10px;
+  left: 10px;
+  font-weight: 700;
+  width: -moz-max-content;
+  width: max-content;
+  margin: auto;
+  font-size: 23px;
+}
+body .main {
+  width: 100%;
+  /* 表示カードを操作するコード */
+  /*　todoカード表示 */
+}
+body .main .modal_mask {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(79, 73, 73, 0.3);
+  z-index: 12;
+  position: fixed;
+  display: none;
+}
+body .main .modal {
+  display: none;
+  position: fixed;
+  z-index: 15;
+  background-color: white;
+  width: 50vw;
+  padding: 30px 20px;
+  border-radius: 15px;
+  flex-direction: column;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+body .main .modal__close-btn.active {
+  display: flex;
+  margin-right: 5px;
+  transform: translateY(-10px);
+  width: 35px;
+  height: 35px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 0 auto;
+  transition: 0.4s;
+}
+body .main .modal__close-btn.active:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 100%;
+}
+body .main .modal__close-btn.active:active {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 100%;
+}
+body .main .modal > input {
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+body .main .modal__title {
+  font-size: 30px;
+  background-color: #dddddd;
+}
+body .main .modal__detail {
+  border: none;
+  resize: none;
+  outline: none;
+  font-size: 20px;
+  margin-top: 10px;
+  background-color: #dddddd;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+body .main .modal__deadline {
+  width: -moz-max-content;
+  width: max-content;
+  font-size: 20px;
+  margin-left: 1%;
+}
+body .main .modal__submit {
+  width: 50%;
+  border-radius: 14px;
+  background-color: none;
+  background-color: rgb(36, 190, 12);
+  border: none;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 20px;
+  color: white;
+  margin: 20px 10px 0 auto;
+  transition: 0.5s;
+}
+body .main .modal__submit:hover {
+  background-color: rgb(34, 140, 17);
+}
+body .main .message {
+  width: 80vw;
+  border-radius: 13px;
+  margin: 15px auto;
+  display: flex;
+  align-items: center;
+  display: none;
+}
+body .main .message__body {
+  width: 85%;
+  white-space: normal;
+  overflow-wrap: break-word;
+  overflow: visible;
+  margin: 10px 10px;
+}
+body .main .message__close-btn {
+  font-size: 20px;
+  margin: auto 10px auto auto;
+}
+body .main .message.error {
+  background-color: #f8d7da;
+  border: #f5c6cb;
+}
+body .main .message.info {
+  background-color: #d1ecf1;
+  border: #bee5eb;
+}
+body .main .card-toggle {
+  display: block;
+  position: relative;
+  width: 50px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #dddddd;
+  cursor: pointer;
+  transition: background-color 0.4s;
+  margin: 10px 20px 10px auto;
+}
+body .main .card-toggle:has(:checked) {
+  background-color: rgb(71, 109, 181);
+}
+body .main .card-toggle::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  content: "";
+  transition: left 0.4s;
+}
+body .main .card-toggle:has(:checked)::after {
+  left: 30px;
+}
+body .main .card-toggle > input {
+  display: none;
+}
+body .main .card-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  flex-wrap: wrap;
+  margin: auto;
+  gap: 3vw;
+  width: 83vw;
+}
+body .main .card-container .card {
+  border-radius: 10px;
+  background-color: rgb(236, 238, 239);
+  width: 40vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+body .main .card-container .card__title {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+body .main .card-container .card__title--header {
+  display: none;
+  align-self: flex-start;
+  margin-left: 10%;
+}
+body .main .card-container .card__title--header.is_expired {
+  /* is_expiredがある時だけ表示する */
+  display: flex;
+  background-color: red;
+  display: block;
+  color: white;
+  width: 100px;
+  text-align: center;
+  border-radius: 13px;
+}
+body .main .card-container .card__title--body {
+  width: 80%;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  font-size: 24px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  overflow: visible;
+}
+body .main .card-container .card__title--detail {
+  display: none;
+}
+body .main .card-container .card__body {
+  display: flex;
+  flex-direction: row;
+  left: 0;
+}
+body .main .card-container .card__body--deadline {
+  display: block;
+  margin-right: 20px;
+}
+body .main .card-container .card__body--deadline.is_expired {
+  color: red;
+  display: block;
+}
+body .main .card-container .card__body--buttons {
+  display: flex;
+  gap: 10px;
+}
+body .main .card-container .card__body--buttons .button span {
+  font-size: 30px;
+  transition: 0.4s;
+}
+body .main .card-container .card__body--buttons .button span:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 20%;
+}
+body .main .card-container .card__body--buttons .button span:active {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 20%;
+}
+body .floating-btn {
+  border-radius: 100%;
+  background-color: rgb(71, 109, 181);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.3);
+  transition: 0.5s;
+  position: fixed;
+  z-index: 10;
+  bottom: 40px;
+  right: 40px;
+}
+body .floating-btn:hover {
+  background-color: rgb(14, 70, 173);
+}
+body .floating-btn > span {
+  color: white;
+}
+
+@media screen and (max-width: 1025px) {
+  body .main .message__close-body {
+    width: calc(85% - 40px);
+  }
+  body .main .modal {
+    width: 80vw;
+    top: 20vh;
+  }
+  body .main .card-container {
+    flex-direction: column;
+    padding-top: 20px;
+    justify-content: center;
+  }
+  body .main .card-container .card {
+    width: 80vw;
+    margin: auto;
+    margin-bottom: 15px;
+  }
+  body .main .card-container .card__body {
+    flex-direction: column;
+    align-items: center;
+  }
+  body .main .card-container .card__body--deadline {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+}/*# sourceMappingURL=index.css.map */
