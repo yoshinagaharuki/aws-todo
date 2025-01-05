@@ -3,18 +3,53 @@ import { Message } from "../component/message.js";
 import { ApiUrls } from "./config.js";
 
 export class TodoService {
+
     /**
      * API 通信を行う関数の作成。
      */
     static async fetchFromApi(url, options = {}) {
         // 新しいリクエスト前に既存のメッセージを削除
         Message.dispose();
+        return fetch(url, options)
+            .then((res) => {
+                if(!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .catch((error) => {
+                // エラーが発生した場合、エラーメッセージをコンソールに表示
+                console.error("API error:", error);
+                // エラーを再スローして呼び出し元に通知
+                throw error;
+            });
+
+
     }
 
     /**
      * GetTodo を呼び出す関数。
      */
-    static async getAll() {}
+    static async getAll() {
+        return this.fetchFromApi(ApiUrls.getTodo)
+            .then((data) => 
+                data.map(
+                    (item) =>
+                        new Todo(
+                            item.id,
+                            item.title,
+                            item.detail,
+                            item.deadLine,
+                            item.is_done,
+                            item.is_deleted,
+                        )
+                )
+            )
+            .catch((error) => {
+                console.error("Error fetching todos:", error);
+                return [];
+            });
+    }
 
     /**
      * ManageTodo を呼び出す関数。
@@ -32,3 +67,5 @@ export class TodoService {
         };
     }
 }
+
+
